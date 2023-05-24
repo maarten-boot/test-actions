@@ -6,24 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # -------------------------------------
-      - name: start
-        run: |
-          echo "1 The job was automatically triggered by a ${{ github.event_name }} event."
-          echo "2 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-          echo "3 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      # -------------------------------------
+      # we will have to checkout the git before we can scan any item in it
       - name: Check out repository code
         uses: actions/checkout@v3
-      # -------------------------------------
-      - name: using the checkout
-        run: |
-          echo "4 The ${{ github.repository }} repository has been cloned to the runner."
-          echo "5 The workflow is now ready to test your code on the runner."
-      # -------------------------------------
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-          echo "6 This job's status is ${{ job.status }}."      
       # -------------------------------------
       # run the action
       - name: run the reversinglabs/rl-scanner
