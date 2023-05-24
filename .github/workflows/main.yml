@@ -12,16 +12,24 @@ jobs:
       # -------------------------------------
       # run the action
       - name: run the reversinglabs/rl-scanner
+        id: scan
         env: # Or as an environment variable
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        id: scan
-        uses: maarten-boot/rl-scanner-docker-action@v3.6
+        uses: maarten-boot/rl-scanner-docker-action@v3.9
         with:
           my-artifact-to-scan: 'README.md'
       # -------------------------------------
-      # Use the output from the `hello` step
+      # Use the output from the scan step
       - name: Get the output
+        if: success() || failure()
         run: |
           echo "The time is ${{ steps.scan.outputs.time }}"
           echo "The status is ${{ steps.scan.outputs.status }}"
+      # -------------------------------------
+      - name: Archive Report
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: .rl_report
