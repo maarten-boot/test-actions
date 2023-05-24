@@ -5,14 +5,35 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "1 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "2 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "3 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # -------------------------------------
+      - name: start
+        run: |
+          echo "1 The job was automatically triggered by a ${{ github.event_name }} event."
+          echo "2 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "3 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # -------------------------------------
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: echo "4 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "5 The workflow is now ready to test your code on the runner."
+        run: |
+          echo "4 The ${{ github.repository }} repository has been cloned to the runner."
+          echo "5 The workflow is now ready to test your code on the runner."
+      # -------------------------------------
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - run: echo "6 This job's status is ${{ job.status }}."
+          echo "6 This job's status is ${{ job.status }}."
+      
+      # -------------------------------------
+      # run the action
+      - name: run the reversinglabs/rl-scanner
+        id: scan
+        uses: maarten-boot/rl-scanner-docker-action@v3.4
+        with:
+          my-artifact-to-scan: 'README.md'
+
+      # -------------------------------------
+      # Use the output from the `hello` step
+      - name: Get the output
+        run: |
+          echo "The time is ${{ steps.scan.outputs.time }}"
+          echo "The status is ${{ steps.scan.outputs.status }}"
