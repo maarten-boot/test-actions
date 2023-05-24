@@ -8,7 +8,7 @@ jobs:
       # run the action
       - name: run the reversinglabs/rl-scanner
         id: scan
-        uses: maarten-boot/rl-scanner-docker-action@v3.1
+        uses: maarten-boot/rl-scanner-docker-action@v3.2
         with:
           my-artifact-to-scan: 'README.md'
 
