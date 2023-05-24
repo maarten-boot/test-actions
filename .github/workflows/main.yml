@@ -24,8 +24,7 @@ jobs:
       - name: Get the output
         if: success() || failure()
         run: |
-          echo "The time is ${{ steps.scan.outputs.time }}"
-          echo "The status is ${{ steps.scan.outputs.status }}"
+          echo "The status is: '${{ steps.scan.outputs.status }}'"
       # -------------------------------------
       - name: Archive Report
         if: success() || failure()
