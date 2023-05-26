@@ -37,9 +37,8 @@ jobs:
       # -------------------------------------
       - name: list downloads
         run: |
-          ls -l
-          ls -l ${DOWNLOAD_PATH}
-          echo ${{ fromJson(steps.download.outputs.downloaded_files) }}
+          ls -laR
+          echo ${{ steps.download.outputs.downloaded_files }}
         # we may have to tar multiple files together
 
       # -------------------------------------
