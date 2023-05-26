@@ -3,7 +3,8 @@ run-name: Demo release create
 
 on:
   release:
-    types: [created]
+    types:
+      - created
 
 env:
   DOWNLOAD_PATH: rl-scan-release-assets
@@ -16,8 +17,9 @@ jobs:
     steps:
       - name: get the latest code
         uses: actions/checkout@v3
-        run: git describe --tags --abbrev=0
-        run: echo ${{ github.event.release.tag_name }}
+        run: |
+          git describe --tags --abbrev=0
+          echo ${{ github.event.release.tag_name }}
 
       # -------------------------------------
       # get the release assets for the current tag
@@ -27,9 +29,10 @@ jobs:
         with:
           out-file-path: ${{ env.DOWNLOAD_PATH }}
           tag: ${{ github.event.release.tag_name }}
-        run: ls -l
-        run: ls -l ${DOWNLOAD_PATH}
-        run: echo ${{ fromJson(steps.download.outputs.downloaded_files) }}
+        run: |
+          ls -l
+          ls -l ${DOWNLOAD_PATH}
+          echo ${{ fromJson(steps.download.outputs.downloaded_files) }}
         # we may have to tar multiple files together
 
       # -------------------------------------
