@@ -6,7 +6,6 @@ on:
     # we get event created when we dont add manual uploads
     # we get event published when we add manual downloads
     types:
-      - created
       - published
 
 env:
