@@ -12,6 +12,7 @@ env:
 jobs:
   ReleaseScanUploadedAssets:
     runs-on: ubuntu-latest
+
     steps:
       - name: get the latest code
         uses: actions/checkout@v3
