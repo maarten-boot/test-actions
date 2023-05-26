@@ -36,7 +36,7 @@ jobs:
           # Download the attached tarball (*.tar.gz)
           tarBall: true
           # Download the attached zipball (*.zip)
-          zipBall: true
+          zipBall: false
           # Force a path
           out-file-path: ${{ env.DOWNLOAD_PATH }}
           # only for this tag
