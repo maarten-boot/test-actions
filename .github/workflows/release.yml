@@ -37,8 +37,8 @@ jobs:
       # -------------------------------------
       - name: list downloads
         run: |
-          ls -laR
           echo ${{ steps.download.outputs.downloaded_files }}
+          tar cvf ${{ env.DOWNLOAD_PATH }}.tar ${{ env.DOWNLOAD_PATH }}
         # we may have to tar multiple files together
 
       # -------------------------------------
@@ -50,13 +50,15 @@ jobs:
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
         uses: maarten-boot/rl-scanner-docker-action@v3.10
         with:
-          my-artifact-to-scan: ${{ fromJson(steps.download.outputs.downloaded_files)[0] }}
+          my-artifact-to-scan: ${{ env.DOWNLOAD_PATH }}
+
       # -------------------------------------
       # Use the output from the scan step
       - name: Get the output
         if: success() || failure()
         run: |
           echo "The status is: '${{ steps.scan.outputs.status }}'"
+
       # -------------------------------------
       - name: Archive Report
         if: success() || failure()
