@@ -3,6 +3,8 @@ run-name: Demo release create
 
 on:
   release:
+    # we get event created when we dont add manual uploads
+    # we get event published when we add manual downloads
     types:
       - created
       - published
@@ -40,6 +42,8 @@ jobs:
         run: |
           echo ${{ steps.download.outputs.downloaded_files }}
           tar cvf ${{ env.DOWNLOAD_PATH }}.tar ${{ env.DOWNLOAD_PATH }}
+          ls -l
+
         # we may have to tar multiple files together
 
       # -------------------------------------
@@ -51,7 +55,7 @@ jobs:
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
         uses: maarten-boot/rl-scanner-docker-action@v3.10
         with:
-          my-artifact-to-scan: ${{ env.DOWNLOAD_PATH }}
+          my-artifact-to-scan: ${{ env.DOWNLOAD_PATH }}.tar
 
       # -------------------------------------
       # Use the output from the scan step
