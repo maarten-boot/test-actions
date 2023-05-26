@@ -33,6 +33,9 @@ jobs:
         with:
           out-file-path: ${{ env.DOWNLOAD_PATH }}
           tag: ${{ github.event.release.tag_name }}
+
+      # -------------------------------------
+      - name: list downloads
         run: |
           ls -l
           ls -l ${DOWNLOAD_PATH}
