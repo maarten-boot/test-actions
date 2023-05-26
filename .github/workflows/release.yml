@@ -34,7 +34,13 @@ jobs:
         id: download
         uses: robinraju/release-downloader@v1.8
         with:
+          # Download the attached tarball (*.tar.gz)
+          tarBall: true
+          # Download the attached zipball (*.zip)
+          zipBall: true
+          # Force a path
           out-file-path: ${{ env.DOWNLOAD_PATH }}
+          # only for this tag
           tag: ${{ github.event.release.tag_name }}
 
       # -------------------------------------
