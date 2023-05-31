@@ -1,29 +1,43 @@
 name: GitHub Actions Demo
 run-name: GitHub Actions Demo push
+
 on: [push]
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+
     outputs:
       status: ${{ steps.output.outputs.status }}
+      scanfile: ${{ steps.build.outputs.scanfile }}
+
     steps:
       # -------------------------------------
-      # we will have to checkout the git before we can scan any item in it
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      # we will have to checkout data before we can do anything
+      - uses: actions/checkout@v3
+
       # -------------------------------------
-      # run the action
+      # build someting
+      - name: Build
+        id: build
+        run: |
+        python3 -m build
+        echo "scanfile=$( ls dist/*.whl )" >>$GITHUB_OUTPUT
+
+      # -------------------------------------
+      # run the scan action
       - name: run the reversinglabs/rl-scanner
         id: scan
-        env: # Or as an environment variable
+        env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
         uses: maarten-boot/rl-scanner-docker-action@v3.12
         with:
-          my-artifact-to-scan: 'README.md'
+          my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
+
       # -------------------------------------
       # Use the output from the scan step
-      - name: Get the output
+      - name: Get the output from scan
         id: output
         if: success() || failure()
         run: |
@@ -37,7 +51,9 @@ jobs:
           else
               echo "::notice::$STATUS"
           fi
+
           echo "$STATUS" >> $GITHUB_STEP_SUMMARY
+
       # -------------------------------------
       - name: Archive Report
         if: success() || failure()
