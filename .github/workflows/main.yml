@@ -25,6 +25,7 @@ jobs:
         if: success() || failure()
         run: |
           echo "The status is: '${{ steps.scan.outputs.status }}'"
+          echo "status=${{ steps.scan.outputs.status }}" >>$GITHUB_OUTPUT
       # -------------------------------------
       - name: Archive Report
         if: success() || failure()
