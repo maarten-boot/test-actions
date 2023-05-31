@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "just_a_test"
+dynamic = ['version']
+description = "A small example package"
+authors = [
+  { name = "Me Myself and I", email = "me_myself_and_i@example.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[tool.hatch.version]
+path = "src/__init__.py"
