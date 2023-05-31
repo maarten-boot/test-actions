@@ -4,6 +4,8 @@ on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.output.outputs.status }}
     steps:
       # -------------------------------------
       # we will have to checkout the git before we can scan any item in it
@@ -22,6 +24,7 @@ jobs:
       # -------------------------------------
       # Use the output from the scan step
       - name: Get the output
+        id: output
         if: success() || failure()
         run: |
           echo "The status is: '${{ steps.scan.outputs.status }}'"
