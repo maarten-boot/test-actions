@@ -27,10 +27,16 @@ jobs:
         id: output
         if: success() || failure()
         run: |
-          echo "The status is: '${{ steps.scan.outputs.status }}'"
-          echo "status=${{ steps.scan.outputs.status }}" >>$GITHUB_OUTPUT
-          echo "::notice::${{ steps.scan.outputs.status }} BB"
-          echo "::error::${{ steps.scan.outputs.status }} AA"
+          STATUS='${{ steps.scan.outputs.status }}'
+          echo "The status is: '$STATUS'"
+          echo "status=$STATUS" >>$GITHUB_OUTPUT
+
+          if echo "$STATUS" | grep -q FAIL
+          then
+              echo "::error::$STATUS"
+          else
+              echo "::notice::$STATUS"
+          fi
       # -------------------------------------
       - name: Archive Report
         if: success() || failure()
