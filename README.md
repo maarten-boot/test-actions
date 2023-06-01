@@ -19,3 +19,6 @@ As is well documented `pull-request` events only happen if there are no merge co
 * If the scanner detects issues and produces a FAIL message (and a exit code -1) we do not proceed to tag and release.
 
 5. Only in the case of `pull-request` we proceed to tag and release the current code.
+
+Note that just creating a pull request will in this case run the action and produce a release (while the merge itself has not yet taken place).
+When we then merge manually, we will create a push action.
