@@ -21,3 +21,7 @@ dependencies = []
 
 [tool.hatch.version]
 path = "src/__init__.py"
+
+[tool.pylama]
+max_line_length = 160
+skip = "*/.pytest_cache/*, */.tox/*, */mypy_cache/*, ./dist, ./docs"
