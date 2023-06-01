@@ -53,14 +53,12 @@ jobs:
           STATUS='${{ steps.scan.outputs.status }}'
           echo "The status is: '$STATUS'"
           echo "status=$STATUS" >>$GITHUB_OUTPUT
-
           if echo "$STATUS" | grep -q FAIL
           then
               echo "::error::$STATUS"
           else
               echo "::notice::$STATUS"
           fi
-
           echo "$STATUS" >> $GITHUB_STEP_SUMMARY
 
       # -------------------------------------
