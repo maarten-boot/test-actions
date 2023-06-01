@@ -23,6 +23,11 @@ jobs:
       # we will have to checkout data before we can do anything
       - uses: actions/checkout@v3
 
+      - name: BeVerbose
+        run: |
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.ref: ${{ github.ref }}"
+
       # -------------------------------------
       # build someting
       - name: Build
@@ -80,7 +85,7 @@ jobs:
 
       # -------------------------------------
       - name: Create a GitHub release
-        if: success()
+        if: success() && ${{ github.event_name != "push" }}
         uses: ncipollo/release-action@v1.12.0
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
