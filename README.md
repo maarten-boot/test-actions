@@ -15,7 +15,6 @@ As is well documented `pull-request` events only happen if there are no merge co
 3. The whl file then gets scanned with `reversinglabs/rl-scanner`.
 
 4. The resulting status and report are allways extracted and processed.
-
-* If the scanner detects issues and produces a FAIL message (and a exit code -1) we do not proceed to tag and release.
+    * If the scanner detects issues and produces a FAIL message (and a exit code -1) we do not proceed to tag and release.
 
 5. Only in the case of `pull-request` we proceed to tag and release the current code.
