@@ -12,8 +12,9 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-    permissions: write-all
-
+    permissions:
+      contents:
+        - write
     outputs:
       status: ${{ steps.output.outputs.status }}
       scanfile: ${{ steps.build.outputs.scanfile }}
