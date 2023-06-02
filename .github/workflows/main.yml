@@ -46,26 +46,26 @@ jobs:
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-docker-action@v3.12
+        uses: maarten-boot/rl-scanner-docker-action@v3.13
         with:
           my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
       # -------------------------------------
       # Use the output from the scan step
-      - name: Get the output from scan
-        id: output
-        if: success() || failure()
-        run: |
-          STATUS='${{ steps.scan.outputs.status }}'
-          echo "The status is: '$STATUS'"
-          echo "status=$STATUS" >>$GITHUB_OUTPUT
-          if echo "$STATUS" | grep -q FAIL
-          then
-              echo "::error::$STATUS"
-          else
-              echo "::notice::$STATUS"
-          fi
-          echo "$STATUS" >> $GITHUB_STEP_SUMMARY
+      #- name: Get the output from scan
+      #  id: output
+      #  if: success() || failure()
+      #  run: |
+      #    STATUS='${{ steps.scan.outputs.status }}'
+      #    echo "The status is: '$STATUS'"
+      #    echo "status=$STATUS" >>$GITHUB_OUTPUT
+      #    if echo "$STATUS" | grep -q FAIL
+      #    then
+      #        echo "::error::$STATUS"
+      #    else
+      #        echo "::notice::$STATUS"
+      #    fi
+      #    echo "$STATUS" >> $GITHUB_STEP_SUMMARY
 
       # -------------------------------------
       - name: Archive Report
