@@ -1,4 +1,5 @@
 # test-actions
+
 testing actions
 
 ![test_scan](https://github.com/maarten-boot/test-actions/actions/workflows/main.yml/badge.svg?event=push)
@@ -19,5 +20,7 @@ As is well documented `pull-request` events only happen if there are no merge co
 
 5. Only in the case of `pull-request` we proceed to tag and release the current code.
 
-Note that just creating a pull request will in this case run the action and produce a release (while the merge itself has not yet taken place).
+## Investigating:
+Note that just creating a pull request will in this case run the action and produce a release
+(while the merge itself has not yet taken place).
 When we then merge manually, we will create a push action.
