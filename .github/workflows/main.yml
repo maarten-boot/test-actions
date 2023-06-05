@@ -69,8 +69,8 @@ jobs:
           path: .rl_report
 
       - name: Set result status of ReversingLabs/rl-scanner
-      - if: always()
-      - uses: ouzi-dev/commit-status-updater@v2
+        if: always()
+        uses: ouzi-dev/commit-status-updater@v2
         with:
           addHoldComment: "true"
           description: ${{ steps.scan.outputs.status }}
