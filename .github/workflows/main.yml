@@ -46,7 +46,7 @@ jobs:
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-docker-action@v3.14
+        uses: maarten-boot/rl-scanner-docker-action@v3.15
         with:
           my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
@@ -58,19 +58,29 @@ jobs:
           name: report
           path: .rl_report
 
-      # -------------------------------------
-      - name: Bump version and push tag
-        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
+      - name: Run the action # You would run your tests before this using the output to set state/desc
+        uses: Sibz/github-status-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'ReversingLabs/rl-secure'
+          description: ${{ steps.scan.outputs.status }}
+          state: ${{ steps.scan.outputs.state }}
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      # -------------------------------------
-      - name: Create a GitHub release
-        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
-        uses: ncipollo/release-action@v1.12.0
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+#      # -------------------------------------
+#      - name: Bump version and push tag
+#        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
+#        id: tag_version
+#        uses: mathieudutour/github-tag-action@v6.1
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#        # output: new_tag , new_version
+#
+#      # -------------------------------------
+#      - name: Create a GitHub release
+#        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
+#        uses: ncipollo/release-action@v1.12.0
+#        with:
+#          tag: ${{ steps.tag_version.outputs.new_tag }}
+#          name: Release ${{ steps.tag_version.outputs.new_tag }}
+#          body: ${{ steps.tag_version.outputs.changelog }}
