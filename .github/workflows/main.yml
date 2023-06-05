@@ -13,7 +13,9 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      statuses: write
+      pull-requests: write
+
     outputs:
       status: ${{ steps.output.outputs.status }}
       scanfile: ${{ steps.build.outputs.scanfile }}
@@ -23,6 +25,12 @@ jobs:
       # we will have to checkout data before we can do anything
       - uses: actions/checkout@v3
 
+      # set the pending status
+      - uses: ouzi-dev/commit-status-updater@v2
+        with:
+          addHoldComment: "true"
+
+      # be a but more chatty during testing
       - name: BeVerbose
         run: |
           echo "github.event_name: ${{ github.event_name }}"
@@ -51,6 +59,8 @@ jobs:
           my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
       # -------------------------------------
+      # upload the rl-scanner report to github
+      # note it is currently not possible to get the url for this asset
       - name: Archive Report
         if: success() || failure()
         uses: actions/upload-artifact@v3
@@ -58,30 +68,10 @@ jobs:
           name: report
           path: .rl_report
 
-      - name: Run the action # You would run your tests before this using the output to set state/desc
-        # uses: Sibz/github-status-action@v1
-        uses: dobladov/github-status-action
+      - name: Set result status of ReversingLabs/rl-scanner
+      - if: always()
+      - uses: ouzi-dev/commit-status-updater@v2
         with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          context: 'ReversingLabs/rl-secure'
+          addHoldComment: "true"
           description: ${{ steps.scan.outputs.status }}
-          state: ${{ steps.scan.outputs.state }}
-          sha: ${{ github.event.pull_request.head.sha || github.sha }}
-
-#      # -------------------------------------
-#      - name: Bump version and push tag
-#        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
-#        id: tag_version
-#        uses: mathieudutour/github-tag-action@v6.1
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#        # output: new_tag , new_version
-#
-#      # -------------------------------------
-#      - name: Create a GitHub release
-#        if: ${{ success() && contains(fromJSON('["pull_request"]'), github.event_name) }}
-#        uses: ncipollo/release-action@v1.12.0
-#        with:
-#          tag: ${{ steps.tag_version.outputs.new_tag }}
-#          name: Release ${{ steps.tag_version.outputs.new_tag }}
-#          body: ${{ steps.tag_version.outputs.changelog }}
+          status: ${{ steps.scan.outputs.state }}
