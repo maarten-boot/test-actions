@@ -25,10 +25,6 @@ jobs:
       # we will have to checkout data before we can do anything
       - uses: actions/checkout@v3
 
-      # set the pending status
-      - uses: ouzi-dev/commit-status-updater@v2
-        with:
-          addHoldComment: "true"
 
       # be a but more chatty during testing
       - name: BeVerbose
@@ -47,31 +43,48 @@ jobs:
           python3 -m build
           echo "scanfile=$( ls dist/*.whl )" >>$GITHUB_OUTPUT
 
-      # -------------------------------------
-      # run the scan action and produce a step_summary
-      - name: run the reversinglabs/rl-scanner
-        id: scan
-        env:
-          RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
-          RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-docker-action@v3.15
-        with:
-          my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
-
-      # -------------------------------------
-      # upload the rl-scanner report to github
-      # note it is currently not possible to get the url for this asset
-      - name: Archive Report
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: report
-          path: .rl_report
-
-      - name: Set result status of ReversingLabs/rl-scanner
-        if: always()
+      # set the pending status
+      - name: Set pending
         uses: ouzi-dev/commit-status-updater@v2
         with:
           addHoldComment: "true"
-          description: ${{ steps.scan.outputs.status }}
-          status: ${{ steps.scan.outputs.state }}
+
+      # -------------------------------------
+      # run the scan action and produce a step_summary
+      - name: test composite
+        id: scan2
+        env:
+          RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
+          RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
+        uses: maarten-boot/action-rl-scanner@v0.1.3
+        with:
+          my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
+
+#      # -------------------------------------
+#      # run the scan action and produce a step_summary
+#      - name: run the reversinglabs/rl-scanner
+#        id: scan
+#        env:
+#          RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
+#          RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
+#        uses: maarten-boot/rl-scanner-docker-action@v3.15
+#        with:
+#          my-artifact-to-scan: ${{ steps.build.outputs.scanfile }}
+#
+#      # -------------------------------------
+#      # upload the rl-scanner report to github
+#      # note it is currently not possible to get the url for this asset
+#      - name: Archive Report
+#        if: success() || failure()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: report
+#          path: .rl_report
+#
+#      - name: Set result status of ReversingLabs/rl-scanner
+#        if: always()
+#        uses: ouzi-dev/commit-status-updater@v2
+#        with:
+#          addHoldComment: "true"
+#          description: ${{ steps.scan.outputs.status }}
+#          status: ${{ steps.scan.outputs.state }}
