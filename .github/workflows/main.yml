@@ -50,7 +50,7 @@ jobs:
           addHoldComment: "true"
 
       # -------------------------------------
-      # run the scan action and produce a step_summary
+      # run the scan action and produce a step_summary yyy
       - name: test composite
         id: scan2
         env:
