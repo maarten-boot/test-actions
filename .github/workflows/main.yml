@@ -56,7 +56,7 @@ jobs:
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-action@v0.1.10
+        uses: maarten-boot/rl-scanner-action@v0.1.11
         with:
           artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
