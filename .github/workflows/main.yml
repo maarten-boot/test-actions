@@ -16,10 +16,10 @@ jobs:
       statuses: write
       pull-requests: write
 
-    outputs:
-      scanfile: ${{ steps.build.outputs.scanfile }}
-      status: ${{ steps.scan2.outputs.status }}
-      description: ${{ steps.scan2.outputs.description }}
+#    outputs:
+#      scanfile: ${{ steps.build.outputs.scanfile }}
+#      status: ${{ steps.scan2.outputs.status }}
+#      description: ${{ steps.scan2.outputs.description }}
 
     steps:
       # -------------------------------------
@@ -49,7 +49,7 @@ jobs:
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-action@v0.1.36
+        uses: maarten-boot/rl-scanner-action@v0.1.37
         with:
           artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
