@@ -30,7 +30,6 @@ jobs:
       # build someting
       - name: Build
         id: build
-        shell: bash
         run: |
           python3 -m pip install --upgrade pip
           pip install hatchling
@@ -38,21 +37,31 @@ jobs:
           python3 -m build
           echo "scanfile=$( ls dist/*.whl )" >> $GITHUB_OUTPUT
 
+      # -------------------------------------------
+      - name: Set pending
+        uses: ouzi-dev/commit-status-updater@v2
+        with:
+          addHoldComment: "true"
+
       # -------------------------------------
-      # run the scan action and produce a step_summary
       - name: test composite
         id: scan2
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
-        uses: maarten-boot/rl-scanner-action@v0.1.34
+        uses: maarten-boot/rl-scanner-action@v0.1.35
         with:
           artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
-#      - name: Set result status of ReversingLabs/rl-scanner
-#        if: always()
-#        uses: ouzi-dev/commit-status-updater@v2
-#        with:
-#          addHoldComment: "true"
-#          description: ${{ steps.scan2.outputs.status }}
-#          status: ${{ steps.scan2.outputs.state }}
+      - name: verbose3
+        run: |
+          echo "description: ${{ steps.scan2.outputs.description }}"
+          echo "status: ${{ steps.scan2.outputs.status }}"
+
+      - name: Set result status of ReversingLabs/rl-scanner
+        if: always()
+        uses: ouzi-dev/commit-status-updater@v2
+        with:
+          addHoldComment: "true"
+          description: ${{ steps.scan2.outputs.description }}
+          status: ${{ steps.scan2.outputs.status }}
