@@ -16,11 +16,6 @@ jobs:
       statuses: write
       pull-requests: write
 
-#    outputs:
-#      scanfile: ${{ steps.build.outputs.scanfile }}
-#      status: ${{ steps.scan2.outputs.status }}
-#      description: ${{ steps.scan2.outputs.description }}
-
     steps:
       # -------------------------------------
       # we will have to checkout data before we can do anything
