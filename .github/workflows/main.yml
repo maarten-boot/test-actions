@@ -37,12 +37,6 @@ jobs:
           python3 -m build
           echo "scanfile=$( ls dist/*.whl )" >> $GITHUB_OUTPUT
 
-      # -------------------------------------------
-      - name: Set pending
-        uses: ouzi-dev/commit-status-updater@v2
-        with:
-          addHoldComment: "true"
-
       # -------------------------------------
       - name: test composite
         id: scan2
@@ -53,15 +47,3 @@ jobs:
         with:
           artifact-to-scan: ${{ steps.build.outputs.scanfile }}
 
-      - name: verbose3
-        run: |
-          echo "description: ${{ steps.scan2.outputs.description }}"
-          echo "status: ${{ steps.scan2.outputs.status }}"
-
-      - name: Set result status of ReversingLabs/rl-scanner
-        if: always()
-        uses: ouzi-dev/commit-status-updater@v2
-        with:
-          addHoldComment: "true"
-          description: ${{ steps.scan2.outputs.description }}
-          status: ${{ steps.scan2.outputs.status }}
