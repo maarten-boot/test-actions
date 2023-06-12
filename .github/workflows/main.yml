@@ -15,7 +15,10 @@ jobs:
     permissions:
       statuses: write
       pull-requests: write
-
+      # for sarif upload
+      security-events: write
+      actions: read
+      contents: read
     steps:
       # -------------------------------------
       # we will have to checkout data before we can do anything
