@@ -20,3 +20,4 @@ But note that a `pull-request` event will actually run before the merge takes pl
 
 5. we update the commit or pull-request status
 
+test a pr
