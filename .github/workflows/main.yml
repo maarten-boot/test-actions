@@ -21,10 +21,19 @@ jobs:
       # we will have to checkout data before we can do anything
       - uses: actions/checkout@v3
 
+      - name: be verbose
+        shell: bash
+        run: |
+          echo "SHA: $GITHUB_SHA"
+          echo "REF: $GITHUB_REF"
+          echo "REF_NAME: $GITHUB_REF_NAME"
+          echo "SHA_SHORT: $(git rev-parse --short HEAD)"
+
       # -------------------------------------
       # build someting
       - name: Build
         id: build
+        shell: bash
         run: |
           python3 -m pip install --upgrade pip
           pip install hatchling
