@@ -27,7 +27,8 @@ jobs:
           echo "SHA: $GITHUB_SHA"
           echo "REF: $GITHUB_REF"
           echo "REF_NAME: $GITHUB_REF_NAME"
-          echo "SHA_SHORT: $(git rev-parse --short HEAD)"
+          echo "SHA_SHORT: $( git rev-parse --short HEAD )"
+          echo "REPO_NAME: $( basename $(git rev-parse --show-toplevel ) )"
 
       # -------------------------------------
       # build someting
