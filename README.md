@@ -13,10 +13,5 @@ But note that a `pull-request` event will actually run before the merge takes pl
     * In the case of a `pull-request` this reflects the code base with the `pull-request` changes applied.
 
 2. We then build a whl package locally on the runner.
-
 3. The whl file then gets scanned with `reversinglabs/rl-scanner`.
-
-4. The resulting status and report are allways extracted and processed.
-
-5. we update the commit or pull-request status
-
+4. we apply the pipeline: maarten-boot/rl-scanner-action@v0.1.xx that will scan and publish report, SARIF and status
