@@ -10,13 +10,15 @@ on:
 jobs:
   checkout-build-scan-action:
     runs-on: ubuntu-latest
+
     permissions:
       statuses: write
       pull-requests: write
-      # for sarif upload
+      # the next 3 for sarif upload
       security-events: write
       actions: read
       contents: read
+
     steps:
       # -------------------------------------
       # we will have to checkout data before we can do anything
@@ -27,7 +29,9 @@ jobs:
       # produces one filename as output in scanfile=<relative file path>
       - name: Build
         id: build
+
         shell: bash
+
         run: |
           # prepare the build process
           python3 -m pip install --upgrade pip
@@ -41,11 +45,13 @@ jobs:
       # -------------------------------------
       - name: ReversingLabs apply rl-scanner to the build artifact
         id: rl-scan
+
         env:
           RLSECURE_ENCODED_LICENSE: ${{ secrets.RLSECURE_ENCODED_LICENSE }}
           RLSECURE_SITE_KEY: ${{ secrets.RLSECURE_SITE_KEY }}
+
         uses: maarten-boot/rl-scanner-action@v1
+
         with:
           artifact-to-scan: ${{ steps.build.outputs.scanfile }}
           report-path: "My-Report-Dir"
-
