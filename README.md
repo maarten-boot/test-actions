@@ -2,7 +2,6 @@
 
 testing actions
 
-![test_scan](https://github.com/maarten-boot/test-actions/actions/workflows/main.yml/badge.svg?event=push)
 
 The current workflow shows a simplefied way to run tests on code after both `push` and `pull-request`.
 As is well documented `pull-request` events only happen if there are no merge conflicts.
